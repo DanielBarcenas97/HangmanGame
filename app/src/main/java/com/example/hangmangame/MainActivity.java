@@ -33,12 +33,11 @@ public class MainActivity extends AppCompatActivity {
     private void configView() {
         dataViewModel = new ViewModelProvider(this).get(DataViewModel.class);
 
-        dataViewModel.getHangmanRepository().observe(this, responseHangman -> {
-            String category = responseHangman.getCategory();
-            String word = responseHangman.getWord();
-            binding.dataGame.setText(word);
-        });
-
+        //dataViewModel.getHangmanRepository().observe(this, responseHangman -> {
+        //    String category = responseHangman.getCategory();
+        //    String word = responseHangman.getWord();
+        //    binding.dataGame.setText(word);
+        //});
 
         binding.init.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +46,19 @@ public class MainActivity extends AppCompatActivity {
                 dataViewModel.getHangmanRepository();
             }
         });
+
+        final Observer<ResponseHangman> observer = new Observer<ResponseHangman>() {
+            @Override
+            public void onChanged(ResponseHangman responseHangman) {
+                String category = responseHangman.getCategory();
+                String word = responseHangman.getWord();
+                binding.dataGame.setText(word);
+            }
+        };
+
+        dataViewModel.getHangmanRepository().observe(this,observer);
+
+
     }
 }
 
