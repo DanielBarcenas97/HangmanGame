@@ -17,9 +17,13 @@ public class DataViewModel extends ViewModel {
        dataGameRepository = DataGameRepository.getInstance();
     }
 
-    public MutableLiveData<ResponseHangman>  getHangmanRepository(){
+    public LiveData<ResponseHangman>  getHangmanRepository(){
         mutableLiveData = dataGameRepository.getResponse();
         return mutableLiveData;
     }
+
+    //public void getWordAndTrick(){
+    //    mutableLiveData = dataGameRepository.getResponse();
+    //}
 
 }
