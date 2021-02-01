@@ -7,7 +7,16 @@
 
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.example.hangmangame.GameFragment"
+        android:name="com.example.hangmangame.MainFragment"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_gameFragment_to_gamePlayFragment"
+            app:destination="@id/gamePlayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gamePlayFragment"
+        android:name="com.example.hangmangame.GameFragment"
+        android:label="fragment_game_play"
+        tools:layout="@layout/fragment_game_play" />
 </navigation>

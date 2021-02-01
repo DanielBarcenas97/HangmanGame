@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".GameFragment">
+    tools:context=".MainFragment">
 
 
     <ImageView
@@ -24,15 +24,16 @@
         android:layout_marginTop="70dp"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/calligraphr_regular"
-        android:text="HangmanGame"
+        android:text="@string/tv_tittle"
         android:textColor="@color/white"
-        android:textSize="60sp"
+        android:textSize="50sp"
         android:textStyle="bold">
 
     </TextView>
 
 
     <Button
+        android:id="@+id/btn_start"
         android:fontFamily="@font/calligraphr_regular"
         android:textStyle="bold"
         android:text="@string/tv_start"
