@@ -12,42 +12,43 @@ import retrofit2.Response;
 
 public class DataGameRepository {
 
+    private static HangmanApi hangmanApi;
+
+    private final MutableLiveData<ResponseHangman> responseData = new MutableLiveData<>();
+
     private static DataGameRepository dataGameRepository;
-    private HangmanApi hangmanApi;
 
     public static DataGameRepository getInstance(){
         if(dataGameRepository == null) {
             dataGameRepository = new DataGameRepository();
         }
-
         return dataGameRepository;
     }
 
+
     public DataGameRepository(){
-        hangmanApi = RetrofitService.getApi(HangmanApi.class);
+        hangmanApi = RetrofitService.getInterface();
     }
 
-    public MutableLiveData<ResponseHangman> getWordAndTrick(){
-        MutableLiveData<ResponseHangman> data = new MutableLiveData<>();
+    public MutableLiveData<ResponseHangman> getResponse(){
+        Call<ResponseHangman> responseHangmanCall = hangmanApi.getWordAndTrick();
 
-        hangmanApi.getWordAndTrick().enqueue(new Callback<ResponseHangman>() {
+        responseHangmanCall.enqueue(new Callback<ResponseHangman>() {
             @Override
-            public void onResponse(Call<ResponseHangman> call,
-                                   Response<ResponseHangman> response) {
-                if (response.isSuccessful()){
-                    data.setValue(response.body());
-                    //data.postValue(response.body());
-                }
+            public void onResponse(Call<ResponseHangman> call, Response<ResponseHangman> response) {
+                responseData.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<ResponseHangman> call, Throwable t) {
-                data.setValue(null);
+                responseData.postValue(null);
             }
         });
 
-        return data;
+        return responseData;
     }
+
+
 
 
 

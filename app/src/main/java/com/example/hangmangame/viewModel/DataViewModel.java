@@ -12,20 +12,14 @@ public class DataViewModel extends ViewModel {
     private MutableLiveData<ResponseHangman> mutableLiveData;
     private DataGameRepository dataGameRepository;
 
-
-    public void init(){
-        //if(mutableLiveData != null){
-        //    return;
-        //}
-
+    public DataViewModel() {
+       mutableLiveData = new MutableLiveData<>();
         dataGameRepository = DataGameRepository.getInstance();
-        mutableLiveData = dataGameRepository.getWordAndTrick();
-
     }
 
-    public LiveData<ResponseHangman>  getHangmanRepository(){
+    public MutableLiveData<ResponseHangman>  getHangmanRepository(){
+        mutableLiveData = dataGameRepository.getResponse();
         return mutableLiveData;
     }
-
 
 }

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void configView() {
         dataViewModel = new ViewModelProvider(this).get(DataViewModel.class);
-        dataViewModel.init();
+
         dataViewModel.getHangmanRepository().observe(this, responseHangman -> {
             String category = responseHangman.getCategory();
             String word = responseHangman.getWord();
@@ -44,8 +44,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 binding.dataGame.setText("");
-                configView();
+                dataViewModel.getHangmanRepository();
             }
         });
     }
 }
+

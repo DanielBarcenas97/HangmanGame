@@ -11,9 +11,10 @@ public class RetrofitService {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    public static <S> S getApi(Class<S> serviceClass) {
-        return retrofit.create(serviceClass);
+    public static HangmanApi getInterface() {
+        return retrofit.create(HangmanApi.class);
     }
+
 
 }
 
