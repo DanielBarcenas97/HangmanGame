@@ -16,6 +16,7 @@ import com.example.hangmangame.data.model.ResponseHangman;
 import com.example.hangmangame.databinding.FragmentGamePlayBinding;
 import com.example.hangmangame.viewModel.DataViewModel;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class GameFragment extends Fragment {
@@ -57,7 +58,7 @@ public class GameFragment extends Fragment {
             public void onChanged(ResponseHangman responseHangman) {
                 String category = responseHangman.getCategory();
                 String word = responseHangman.getWord();
-                Binding.trick.setText(category);
+                Binding.trick.setText(MessageFormat.format("{0}{1}", getString(R.string.trick), category));
             }
         };
 
@@ -74,5 +75,14 @@ public class GameFragment extends Fragment {
     }
 
 
+    //private void updateImg(int play) {
+    //    int resImg = getResources().getIdentifier("hangman_" + play, "drawable", getPackageName());
+    //    Binding.img.setImageResource(resImg);
+    //}
+
+
+    public void touchLetter(View view) {
+
+    }
 
 }

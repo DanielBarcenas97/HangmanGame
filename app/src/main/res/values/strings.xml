@@ -41,4 +41,8 @@
     <string name="a">A</string>
     <string name="ñ">ñ</string>
     <string name="btn_restart">Restart</string>
+    <string name="trick">Tip: </string>
+    <string name="f">F</string>
+    <string name="j">J</string>
+    <string name="img">img</string>
 </resources>
