@@ -125,8 +125,8 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         Binding.wordTv.setText(convertToString(secretWord2));
 
         //Tip
-        Binding.trick.setText(MessageFormat.format("{0}{1}",
-                getString(R.string.trick), category + word));
+        Binding.trick.setText(MessageFormat.format("{0} {1}",
+                getString(R.string.trick), category));
     }
 
     private String convertToString(ArrayList<String> arrayWord){
@@ -306,6 +306,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
                     Binding.keyboard.setVisibility(View.GONE);
                     Binding.gameOver.setVisibility(View.VISIBLE);
                     Binding.gameOver.setText(R.string.game_over);
+                    Binding.trick.setText(MessageFormat.format("Response: {0}", convertToString(secretWord)));
                     Binding.btnRestart.setVisibility(View.VISIBLE);
                     Binding.btnRestart.setText(R.string.restart);
                     break;
