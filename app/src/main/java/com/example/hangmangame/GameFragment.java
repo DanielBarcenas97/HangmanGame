@@ -28,16 +28,11 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     private DataViewModel dataViewModel;
     private FragmentGamePlayBinding Binding;
     private NavController navController;
-
-    
-    private ArrayList<String> letters = new ArrayList<>();
-
-    ArrayList<String> secretWord = new ArrayList<>();
-    ArrayList<String> secretWord2 = new ArrayList<>();
-    Boolean turn = false;
-    private int errors = 0;
     public static final int MAX_ERRORS = 6;
-    private String wordToFind;
+    private final ArrayList<String> secretWord = new ArrayList<>();
+    private final ArrayList<String> secretWord2 = new ArrayList<>();
+    private Boolean turn = false;
+    private int errors = 0;
 
 
     @Nullable
@@ -94,50 +89,61 @@ public class GameFragment extends Fragment implements View.OnClickListener {
             public void onChanged(ResponseHangman responseHangman) {
                 String category = responseHangman.getCategory();
                 String word = responseHangman.getWord();
-                //Convert to ArrayList
-                for(int i = 0; i<word.length(); i++){
-                    secretWord.add(String.valueOf(word.charAt(i)));
-                }
-                Binding.trick.setText(MessageFormat.format("{0}{1}", getString(R.string.trick), category + word));
-
-                for(int i=0; i<secretWord.size(); i++){
-                    secretWord2.add(i,"_ ");
-                }
-                Binding.wordTv.setText(convertToString(secretWord2));
+                initGame(word,category);
             }
         };
 
         dataViewModel.getHangmanRepository().observe(getViewLifecycleOwner(),observer);
 
-       Binding.btnRestart.setOnClickListener(new View.OnClickListener() {
+        Binding.btnRestart.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-
-               errors = 0;
-               secretWord2.clear();
-               secretWord.clear();
                dataViewModel.getHangmanRepository();
+               errors = 0;
                Binding.img.setImageResource(R.drawable.vacio);
                Binding.keyboard.setVisibility(View.VISIBLE);
                Binding.gameOver.setVisibility(View.GONE);
                Binding.btnRestart.setVisibility(View.GONE);
-               for(int i=0; i<secretWord.size(); i++){
-                   secretWord2.add(i,"_ ");
-               }
-               Binding.wordTv.setText(convertToString(secretWord2));
+
            }
        });
-
-
     }
 
+    private void initGame(String word, String category) {
+        secretWord2.clear();
+        secretWord.clear();
+        //Convert to ArrayList
+        for(int i = 0; i<word.length(); i++){
+            secretWord.add(String.valueOf(word.charAt(i)));
+        }
+
+        for(int i=0; i<secretWord.size(); i++){
+            secretWord2.add(i," _ ");
+        }
+
+        //Secret Word
+        Binding.wordTv.setText(convertToString(secretWord2));
+
+        //Tip
+        Binding.trick.setText(MessageFormat.format("{0}{1}",
+                getString(R.string.trick), category + word));
+    }
+
+    private String convertToString(ArrayList<String> arrayWord){
+        StringBuilder sb = new StringBuilder();
+        for (String s : arrayWord) {
+            sb.append(s);
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         char letter;
         turn = false;
-        secretWord2.clear();
+
         if(errors < MAX_ERRORS){
             switch (view.getId()) {
                 case R.id.letter_a:
@@ -251,32 +257,32 @@ public class GameFragment extends Fragment implements View.OnClickListener {
             }
             searchLetterInArray(String.valueOf(letter));
         }
-
-
-    }
-
-    private String convertToString(ArrayList<String> arrayWord){
-        StringBuilder sb = new StringBuilder();
-        for (String s : arrayWord) {
-            sb.append(s);
-            sb.append(" ");
-        }
-        return sb.toString();
     }
 
     private void searchLetterInArray(String letter) {
 
+        //Draw in TextView
         for(int i=0; i<secretWord.size(); i++){
             if(letter.equals(secretWord.get(i))){
                 turn = true;
-                secretWord2.add(i, letter + " ");
+                secretWord2.set(i, letter);
             }else{
-                secretWord2.add(i, "_ ");
+                if(letter.equals(" _ ")){
+                    secretWord2.set(i, " _ ");
+                }
+
             }
         }
 
+        //Validation Game
+        validationGame(turn);
+
+        //Text Response
         Binding.wordTv.setText(convertToString(secretWord2));
 
+    }
+
+    private void validationGame(Boolean turn) {
         if(!turn){
             errors +=1;
             switch (errors){
@@ -299,10 +305,20 @@ public class GameFragment extends Fragment implements View.OnClickListener {
                     Binding.img.setImageResource(R.drawable.loser);
                     Binding.keyboard.setVisibility(View.GONE);
                     Binding.gameOver.setVisibility(View.VISIBLE);
+                    Binding.gameOver.setText(R.string.game_over);
                     Binding.btnRestart.setVisibility(View.VISIBLE);
+                    Binding.btnRestart.setText(R.string.restart);
                     break;
             }
+        }else{
+            if(secretWord.equals(secretWord2)){
+                Binding.img.setImageResource(R.drawable.hangman1);
+                Binding.keyboard.setVisibility(View.GONE);
+                Binding.gameOver.setVisibility(View.VISIBLE);
+                Binding.gameOver.setText(R.string.win);
+                Binding.btnRestart.setVisibility(View.VISIBLE);
+                Binding.btnRestart.setText(R.string.play_again);
+            }
         }
-
     }
 }

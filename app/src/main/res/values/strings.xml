@@ -46,4 +46,8 @@
     <string name="j">J</string>
     <string name="img">img</string>
     <string name="tv_game_over">Game Over</string>
+    <string name="play_again">Play Again</string>
+    <string name="win">You Win !!!</string>
+    <string name="restart">Restart</string>
+    <string name="game_over">Game Over</string>
 </resources>
