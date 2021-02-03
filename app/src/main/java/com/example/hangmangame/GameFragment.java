@@ -9,7 +9,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +36,8 @@ public class GameFragment extends Fragment implements View.OnClickListener {
     private final ArrayList<String> secretWord2 = new ArrayList<>();
     private Boolean turn = false;
     private int errors = 0;
+
+
 
 
     @Nullable
@@ -87,17 +92,23 @@ public class GameFragment extends Fragment implements View.OnClickListener {
         final Observer<ResponseHangman> observer = new Observer<ResponseHangman>() {
             @Override
             public void onChanged(ResponseHangman responseHangman) {
+                Binding.progressBar.setVisibility(View.GONE);
                 String category = responseHangman.getCategory();
                 String word = responseHangman.getWord();
                 initGame(word,category);
             }
         };
 
+
         dataViewModel.getHangmanRepository().observe(getViewLifecycleOwner(),observer);
+        Binding.progressBar.getIndeterminateDrawable().setColorFilter(Color.BLACK, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         Binding.btnRestart.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
+               Binding.progressBar.setVisibility(View.VISIBLE);
+               Binding.trick.setText("");
+               Binding.wordTv.setText("");
                dataViewModel.getHangmanRepository();
                errors = 0;
                Binding.img.setImageResource(R.drawable.vacio);
@@ -322,4 +333,7 @@ public class GameFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
+
+
+
 }
